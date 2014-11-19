@@ -6,9 +6,15 @@ var http = require('http'),
 
 function http_reponse (request, response) {
 	var parsed_url = url.parse(request.url, true);
-  io.sockets.emit("message", {"title": parsed_url.query.title, "body": parsed_url.query.body});
-  response.writeHead(200, {'Content-Type': 'text/json'});
-  response.end(JSON.stringify({"response": "rad dude"}));
+  if(parsed_url.pathname == "/push") {
+    io.sockets.emit("message", {"title": parsed_url.query.title, "body": parsed_url.query.body});
+    response.writeHead(200, {'Content-Type': 'text/json'});
+    response.end(JSON.stringify({"response": "rad dude"}));
+  }
+  else {
+    response.writeHead(404, {'Content-Type': 'text/plain'});
+    response.end("Not Found");
+  }
 }
 
 io.sockets.on('connection', function (socket) {
