@@ -6,7 +6,7 @@ var http = require('http'),
 
 function http_reponse (request, response) {
 	var parsed_url = url.parse(request.url, true);
-  io.sockets.emit("message", {"message": parsed_url.query.message, "title": parsed_url.query.title});
+  io.sockets.emit("message", {"title": parsed_url.query.title, "body": parsed_url.query.body});
   response.writeHead(200, {'Content-Type': 'text/json'});
   response.end(JSON.stringify({"response": "rad dude"}));
 }
