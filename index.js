@@ -7,7 +7,7 @@ var http = require('http'),
 function http_reponse (request, response) {
 	var parsed_url = url.parse(request.url, true);
   if(parsed_url.pathname == "/push") {
-    io.sockets.emit("message", {"title": parsed_url.query.title, "body": parsed_url.query.body});
+    io.sockets.emit("message", {"title": parsed_url.query.title, "body": parsed_url.query.body, "link": parsed_url.query.link});
     response.writeHead(200, {'Content-Type': 'text/json'});
     response.end(JSON.stringify({"response": "rad dude"}));
   }
