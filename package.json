@@ -9,6 +9,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "socket.io": "0.9.*"
+    "express": "^4.10.4",
+    "hiredis": "^0.1.17",
+    "redis": "^0.12.1"
   }
 }
