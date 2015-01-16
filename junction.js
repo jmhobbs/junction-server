@@ -1,6 +1,36 @@
-var      net = require('net'),
-       redis = require("redis"),
- redisClient = redis.createClient();
+/*
+
+ var msgpack = require('msgpack');
+
+    // ... get a net.Stream instance, s, from somewhere
+
+    var ms = new msgpack.Stream(s);
+    ms.addListener('msg', function(m) {
+        sys.debug('received message: ' + sys.inspect(m));
+    });
+
+    var b = msgpack.pack(o);
+
+*/
+
+var    redis = require("redis"),
+ redisClient = redis.createClient(),
+     msgpack = require('msgpack'),
+     server;
+
+if(process.env.USE_TLS == 'yes'){
+  console.log('Using TLS');
+  var fs = require('fs');
+  var tls_options = {
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('public-cert.pem')
+  };
+  server = require('tls').createServer(tls_options, serverHandler);
+}
+else {
+  console.log('NOT Using TLS');
+  server = require('net').createServer(serverHandler);
+}
 
 redisClient.on("error", function (err) {
   console.log("Error " + err);
@@ -24,7 +54,7 @@ redisClient.on("error", function (err) {
 
 var clients = [];
  
-var server = net.createServer(function (socket) {
+function serverHandler (socket) {
 
   socket.name = socket.remoteAddress + ":" + socket.remotePort 
 
@@ -42,7 +72,7 @@ var server = net.createServer(function (socket) {
     console.log("Disconnect:", socket.name);
   });
  
-});
+}
 
 redisClient.on("ready", function (err) {
   server.listen(3000);
