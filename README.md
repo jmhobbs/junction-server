@@ -26,3 +26,19 @@ These two are connected by a redis queue or two.
 1. Push server pops it off, checks for valid clients
   2. If a client (or more) are found, ship it out.
   2. If a client is not found, push it into a failed queue/pile
+
+# Packet Format
+
+    [SHA256 HMAC][MSGPACK] 
+
+## msgpack Body
+
+    {
+      "id": 12345,
+      "title": "derp",
+      "body": "",              // Optional
+      "url": "",               // Optional
+      "image_url": "",         // Optional
+      "timestamp": 123456789
+    }
+
