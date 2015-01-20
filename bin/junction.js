@@ -1,18 +1,4 @@
 "use strict";
-/*
-
- var msgpack = require("msgpack");
-
-    // ... get a net.Stream instance, s, from somewhere
-
-    var ms = new msgpack.Stream(s);
-    ms.addListener("msg", function(m) {
-        sys.debug("received message: " + sys.inspect(m));
-    });
-
-    var b = msgpack.pack(o);
-
-*/
 
 var    redis = require("redis"),
  redisClient = redis.createClient(),
