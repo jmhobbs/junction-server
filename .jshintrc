@@ -1,0 +1,17 @@
+{
+  "strict": true,
+    "globalstrict": false,
+    "nonew": true,
+    "newcap": true,
+    "quotmark": "double",
+    "node": true,
+    "globals"   : {
+      /* MOCHA */
+      "describe"   : false,
+      "it"         : false,
+      "before"     : false,
+      "beforeEach" : false,
+      "after"      : false,
+      "afterEach"  : false
+    }
+}

@@ -1,3 +1,3 @@
-web: node web.js
-api: node api.js
-junction: node junction.js
+web: node bin/web.js
+api: node bin/api.js
+junction: node bin/junction.js
