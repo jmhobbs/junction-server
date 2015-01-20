@@ -31,7 +31,7 @@ describe("User", function(){
       user.created  = 1;
       user.modified = 1;
       user.save(redis_client, function (error) {
-        should(error).not.be.ok;
+        (error === null).should.be.true;
         redis_client.hgetall("user:" + user.id, function (error, hash) {
           hash.id.should.eql(user.id.toString());
           hash.email.should.eql(user.email.toString());
@@ -51,7 +51,7 @@ describe("User", function(){
       user.created  = 1;
       user.modified = 1;
       user.save(redis_client, function (error) {
-        should(error).not.be.ok;
+        (error === null).should.be.true;
         redis_client.get("user:index:email:" + user.email, function (error, reply) {
           reply.should.eql(user.id);
           done();
@@ -63,7 +63,7 @@ describe("User", function(){
   describe("findByEmail", function() {
     it("should return null when the email is not in the index", function(done){
       User.findByEmail(redis_client, "nope@nope.org", function (error, user) {
-        should(user).not.be.ok;
+        (user === null).should.be.true;
         done();
       });
     });
@@ -84,15 +84,15 @@ describe("User", function(){
   describe("findByID", function() {
     it("should return null when the user does not exist", function(done){
       User.findByID(redis_client, 999, function (error, user) {
-        should(user).not.be.ok;
+        (user === null).should.be.true;
         done();
       });
     });
 
     it("should return a User when the user exists", function(done){
       User.findByID(redis_client, 5, function (error, user) {
-        should(error).not.be.ok;
-        should(user).be.ok;
+        (error === null).should.be.true;
+        (user === null).should.be.false;
         user.should.have.property("id", 5);
         user.should.have.property("email", "john@example.com");
         user.should.have.property("password", "asdf");
