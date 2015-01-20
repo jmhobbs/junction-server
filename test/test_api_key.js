@@ -75,6 +75,9 @@ describe("APIKey", function(){
     it("should return a new APIKey", function () {
       var api_key = APIKey.createAPIKey(1);
       should(api_key).be.ok;
+      // This only works if user_id is single digit.
+      api_key.key.should.be.length(26);
+      api_key.user_id.should.be.equal(1);
     });
   });
   
