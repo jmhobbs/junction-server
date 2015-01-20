@@ -1,5 +1,6 @@
 "use strict";
 /*jshint expr: true*/
+/*jshint multistr: true*/
 
 var    should = require("should"),
        Packet = require("../lib/packet.js");
