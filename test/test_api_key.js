@@ -8,18 +8,20 @@ var    should = require("should"),
 /////////////////
 // Setup
 
-redis_client.sadd("api_key:index:user:5", "phuic@ah9P");
-redis_client.sadd("api_key:index:user:5", "Oa9ei@t}ed");
+redis_client.sadd("api_key:index:user:5", "5.phuic@ah9P");
+redis_client.sadd("api_key:index:user:5", "5.Oa9ei@t}ed");
 
-redis_client.hmset("api_key:phuic@ah9P", {
-  key      : "phuic@ah9P",
+redis_client.hmset("api_key:5.phuic@ah9P", {
+  key      : "5.phuic@ah9P",
+  secret   : "phuic@ah9P",
   user_id  : 5,
   created  : 1421549040,
   modified : 1421549041
 });
 
-redis_client.hmset("api_key:Oa9ei@t}ed", {
-  key      : "Oa9ei@t}ed",
+redis_client.hmset("api_key:5.Oa9ei@t}ed", {
+  key      : "5.Oa9ei@t}ed",
+  secret   : "Oa9ei@t}ed",
   user_id  : 5,
   created  : 1421549041,
   modified : 1421549042
@@ -31,14 +33,14 @@ describe("APIKey", function(){
 
   describe("save", function () {
     it("should save the api key to a redis hash", function (done) {
-      var api_key      = new APIKey.APIKey("raeMSi{ur7");
-      api_key.user_id  = 1;
+      var api_key      = new APIKey.APIKey("raeMSi{ur7", "asdf", 1);
       api_key.created  = 2;
       api_key.modified = 3;
       api_key.save(redis_client, function (error) {
         (error === null).should.be.true;
         redis_client.hgetall("api_key:" + api_key.key, function (error, hash) {
           hash.key.should.eql(api_key.key.toString());
+          hash.secret.should.eql(api_key.secret.toString());
           hash.user_id.should.eql(api_key.user_id.toString());
           hash.created.should.eql(api_key.created.toString());
           hash.modified.should.eql(api_key.modified.toString());
@@ -48,8 +50,7 @@ describe("APIKey", function(){
     });
 
     it("should save the key to a user index", function (done) {
-      var api_key      = new APIKey.APIKey("vo2lie;Kea");
-      api_key.user_id  = 2;
+      var api_key      = new APIKey.APIKey("vo2lie;Kea", "asdf", 2);
       api_key.created  = 3;
       api_key.modified = 4;
       api_key.save(redis_client, function (error) {
@@ -77,6 +78,7 @@ describe("APIKey", function(){
       should(api_key).be.ok;
       // This only works if user_id is single digit.
       api_key.key.should.be.length(26);
+      api_key.secret.should.be.length(16);
       api_key.user_id.should.be.equal(1);
     });
   });
@@ -90,9 +92,10 @@ describe("APIKey", function(){
     });
 
     it("should return an APIKey when the key exists", function(done){
-      APIKey.findByKey(redis_client, "phuic@ah9P", function (error, api_key) {
+      APIKey.findByKey(redis_client, "5.phuic@ah9P", function (error, api_key) {
         (api_key === null).should.be.false;
-        api_key.should.have.property("key", "phuic@ah9P");
+        api_key.should.have.property("key", "5.phuic@ah9P");
+        api_key.should.have.property("secret", "phuic@ah9P");
         api_key.should.have.property("user_id", 5);
         api_key.should.have.property("created", 1421549040);
         api_key.should.have.property("modified", 1421549041);
